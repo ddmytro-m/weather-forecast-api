@@ -8,9 +8,11 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "lint": "eslint --fix src/**/*.ts",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "db:deploy": "npx prisma migrate deploy && npx prisma generate"
   },
   "dependencies": {
+    "@prisma/client": "^6.8.2",
     "axios": "^1.9.0",
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
@@ -25,6 +27,7 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "nodemon": "^3.1.10",
     "prettier": "^3.5.3",
+    "prisma": "^6.8.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }

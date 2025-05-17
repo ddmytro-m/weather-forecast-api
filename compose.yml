@@ -14,6 +14,8 @@ services:
     restart: always
     depends_on:
       - api
+    networks:
+      - nginx-network
 
   api:
     build:
@@ -24,9 +26,35 @@ services:
       - /app/node_modules
     environment:
       - API_KEY=${API_KEY}
+      - DATABASE_URL=${DATABASE_URL}
     expose:
       - 3000
     restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - prisma-network
+      - nginx-network
+  
+  postgres:
+    image: postgres:17
+    restart: always
+    environment:
+      - POSTGRES_DB=${POSTGRES_USER}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    expose:
+      - 5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+    networks:
+      - prisma-network
 
   nginx:
     image: nginx
@@ -38,3 +66,15 @@ services:
       - client
       - api
     restart: always
+    networks:
+      - nginx-network
+
+volumes:
+  pgdata:
+    name: pgdata
+
+networks:
+  prisma-network:
+    name: prisma-network
+  nginx-network:
+    name: nginx-network
