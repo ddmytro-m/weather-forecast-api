@@ -9,7 +9,7 @@ services:
       - ./client:/app
       - /app/node_modules
     expose:
-      - "5173"
+      - 5173
     command: npm run dev
     restart: always
     depends_on:
@@ -22,14 +22,16 @@ services:
     volumes:
       - ./api:/app
       - /app/node_modules
+    environment:
+      - API_KEY=${API_KEY}
     expose:
-      - "3000"
+      - 3000
     restart: always
 
   nginx:
     image: nginx
     ports: 
-      - "80:80"
+      - 80:80
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
