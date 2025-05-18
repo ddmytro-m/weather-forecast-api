@@ -11,5 +11,6 @@ export const errorHandler = async (
     res.status(err.status).send({ error: err.message })
   } else {
     res.status(500).send({ error: "Internal server error" })
+    console.error(err)
   }
 }

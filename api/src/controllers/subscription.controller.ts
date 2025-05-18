@@ -10,9 +10,9 @@ export const handleSubscribe = async (req: Request, res: Response) => {
   if (!result.isEmpty()) throw createHttpError(400, "Invalid request")
 
   const data = matchedData<Subscription>(req)
-  const token = await subscriptionService.subscribe(data)
+  await subscriptionService.subscribe(data)
 
-  res.send({ token })
+  res.sendStatus(200)
 }
 
 export const handleConfirm = async (req: Request, res: Response) => {
