@@ -3,6 +3,6 @@ export class Mail {
     public email: string,
     public subject: string,
     public template: string,
-    public context: Record<string, unknown>
+    public context: Record<string, unknown>,
   ) {}
 }

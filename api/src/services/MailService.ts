@@ -1,11 +1,10 @@
 import { getMailOrganisationName, getTransporterConfig } from "../configs/mail.config"
-import type { Weather } from "../types/interfaces/Weather"
+import { Mail } from "../types/models/Mail"
 
 import * as fs from "fs"
 import Handlebars from "handlebars"
 import { createTransport, Transporter } from "nodemailer"
 import { resolve } from "path"
-import { Mail } from "../types/models/Mail"
 
 class MailService {
   private transporter: Transporter
