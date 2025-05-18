@@ -18,7 +18,13 @@ export const mailWorker = new Worker(
       const subscription: Subscription = job.data
       const weather = await weatherService.getWeatherByCity(subscription.city)
       const mail = new WeatherMail(subscription.email, weather)
-      await mailQueue.add("send-mail", mail)
+      await mailQueue.add("send-mail", mail, {
+        attempts: 3,
+        backoff: {
+          type: "exponential",
+          delay: 20000,
+        },
+      })
     }
   },
   {

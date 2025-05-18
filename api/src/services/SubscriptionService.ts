@@ -29,7 +29,13 @@ class SubscriptionService {
     })
 
     const mail = new TokenMail(data.email, token)
-    mailQueue.add("send-mail", mail)
+    await mailQueue.add("send-mail", mail, {
+      attempts: 3,
+      backoff: {
+        type: "exponential",
+        delay: 20000,
+      },
+    })
   }
 
   public async confirm(token: string) {
