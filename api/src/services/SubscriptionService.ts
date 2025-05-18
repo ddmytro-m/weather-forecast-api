@@ -2,6 +2,7 @@ import { prisma } from "../prisma/prisma"
 import type { Subscription } from "../types/models/Subscription"
 
 import createHttpError from "http-errors"
+import { mailService } from "./MailService"
 
 class SubscriptionService {
   private async emailExists(email: string) {
@@ -26,7 +27,7 @@ class SubscriptionService {
       select: { token: true },
     })
 
-    return token
+    await mailService.sendTokenEmail(data.email, token)
   }
 
   public async confirm(token: string) {
