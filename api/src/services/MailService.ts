@@ -1,9 +1,11 @@
 import { getMailOrganisationName, getTransporterConfig } from "../configs/mail.config"
+import type { Weather } from "../types/interfaces/Weather"
 
 import * as fs from "fs"
 import Handlebars from "handlebars"
 import { createTransport, Transporter } from "nodemailer"
 import { resolve } from "path"
+import { Mail } from "../types/models/Mail"
 
 class MailService {
   private transporter: Transporter
@@ -43,12 +45,12 @@ class MailService {
     await this.transporter.verify()
   }
 
-  public async sendTokenEmail(email: string, token: string) {
-    const html = this.formatEmail("token", { token })
+  public async sendMail(mail: Mail) {
+    const html = this.formatEmail(mail.template, mail.context)
     await this.transporter.sendMail({
       from: getMailOrganisationName(),
-      to: email,
-      subject: "Subscription Token",
+      to: mail.email,
+      subject: mail.subject,
       html,
     })
   }

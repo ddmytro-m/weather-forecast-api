@@ -6,11 +6,17 @@ Set up the environment variables:
 ### API
 `API_KEY` – get one from [weatherapi.com](https://www.weatherapi.com/)
 
-### Database
+### Databases
+**Postgres:** <br>
 `POSTGRES_DB` – database name <br>
 `POSTGRES_USER` – database user <br>
 `POSTGRES_PASSWORD` – database password <br>
 `DATABASE_URL` – database connection url: postgres://{POSTGRES_USER}:{POSTGRES_PASSWORD}@postgres:5432/{POSTGRES_DB}?schema=public
+
+**REDIS:** <br>
+`REDIS_PASSWORD` – redis password *(required)*
+`REDIS_USER` – redis user *(required)* 
+`REDIS_USER_PASSWORD` – redis user password *(required)*
 
 ### Mail
 **Common**: <br>

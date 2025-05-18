@@ -37,14 +37,20 @@ services:
       - MAIL_CLIENT_SECRET
       - MAIL_REFRESH_TOKEN
       - MAIL_ACCESS_TOKEN
+      - REDIS_PASSWORD
+      - REDIS_USER
+      - REDIS_USER_PASSWORD
     expose:
       - 3000
     restart: always
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
       - prisma-network
+      - redis-network
       - nginx-network
   
   postgres:
@@ -65,6 +71,27 @@ services:
       retries: 20
     networks:
       - prisma-network
+  
+  redis:
+    image: redis:8
+    restart: always
+    environment:
+      - REDIS_PASSWORD
+      - REDIS_USER
+      - REDIS_USER_PASSWORD
+    expose:
+      - 6379
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+      start_period: 5s
+    networks:
+      - redis-network
+
 
   nginx:
     image: nginx
@@ -82,9 +109,13 @@ services:
 volumes:
   pgdata:
     name: pgdata
+  redisdata:
+    name: redisdata
 
 networks:
   prisma-network:
     name: prisma-network
+  redis-network:
+    name: redis-network
   nginx-network:
     name: nginx-network

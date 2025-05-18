@@ -1,5 +1,5 @@
 import { subscriptionService } from "../services/SubscriptionService"
-import type { Subscription } from "../types/models/Subscription"
+import type { Subscription } from "../types/interfaces/Subscription"
 
 import type { Request, Response } from "express"
 import { matchedData, validationResult } from "express-validator"

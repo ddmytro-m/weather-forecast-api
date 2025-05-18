@@ -1,8 +1,9 @@
 import { prisma } from "../prisma/prisma"
-import type { Subscription } from "../types/models/Subscription"
+import { mailQueue } from "../queues/MailQueue"
+import type { Subscription } from "../types/interfaces/Subscription"
+import { TokenMail } from "../types/models/TokenMail"
 
 import createHttpError from "http-errors"
-import { mailService } from "./MailService"
 
 class SubscriptionService {
   private async emailExists(email: string) {
@@ -27,7 +28,8 @@ class SubscriptionService {
       select: { token: true },
     })
 
-    await mailService.sendTokenEmail(data.email, token)
+    const mail = new TokenMail(data.email, token)
+    mailQueue.add("send-mail", mail)
   }
 
   public async confirm(token: string) {
@@ -43,6 +45,20 @@ class SubscriptionService {
     if (!(await this.isTokenValid(token, true))) throw createHttpError(404, "Token not found")
 
     await prisma.subscription.delete({ where: { token } })
+  }
+
+  public async getSubscriptions(frequency: "hourly" | "daily"): Promise<Subscription[]> {
+    return await prisma.subscription.findMany({
+      where: {
+        confirmed: true,
+        frequency,
+      },
+      select: {
+        email: true,
+        city: true,
+        frequency: true,
+      },
+    })
   }
 }
 

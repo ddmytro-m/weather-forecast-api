@@ -1,5 +1,5 @@
 import { WeatherApiResponse } from "../types/interfaces/WeatherApiResponse"
-import type { Weather } from "../types/models/Weather"
+import type { Weather } from "../types/interfaces/Weather"
 
 import axios, { AxiosError, AxiosInstance } from "axios"
 import createHttpError from "http-errors"
