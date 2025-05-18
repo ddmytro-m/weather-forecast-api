@@ -8,4 +8,4 @@ COPY . ./
 ARG MODE=production
 ENV MODE=$MODE
 
-CMD ["npm", "run", "dev"]
+CMD ["sh", "-c", "npm run db:deploy && npm run dev"]
