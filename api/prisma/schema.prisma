@@ -18,4 +18,5 @@ model Subscription {
   city      String
   frequency Frequency
   confirmed Boolean   @default(false)
+  token     String    @unique @default(uuid())
 }
