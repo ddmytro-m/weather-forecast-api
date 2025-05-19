@@ -14,6 +14,7 @@ Set up the environment variables:
 `DATABASE_URL` – database connection url: postgres://{POSTGRES_USER}:{POSTGRES_PASSWORD}@postgres:5432/{POSTGRES_DB}?schema=public
 
 **REDIS:** <br>
+`REDIS_PORT` – redis port *(required)* <br>
 `REDIS_PASSWORD` – redis password *(required)* <br>
 `REDIS_USER` – redis user *(required)* <br>
 `REDIS_USER_PASSWORD` – redis user password *(required)* <br>

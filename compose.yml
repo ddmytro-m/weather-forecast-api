@@ -37,6 +37,7 @@ services:
       - MAIL_CLIENT_SECRET
       - MAIL_REFRESH_TOKEN
       - MAIL_ACCESS_TOKEN
+      - REDIS_PORT
       - REDIS_PASSWORD
       - REDIS_USER
       - REDIS_USER_PASSWORD
@@ -76,12 +77,12 @@ services:
     image: redis:8
     restart: always
     environment:
-      - REDIS_PORT=6379
+      - REDIS_PORT
       - REDIS_PASSWORD
       - REDIS_USER
       - REDIS_USER_PASSWORD
     expose:
-      - 6379
+      - ${REDIS_PORT}
     volumes:
       - redisdata:/data
     healthcheck:
