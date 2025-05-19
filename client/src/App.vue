@@ -1,47 +1,91 @@
 <script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue"
-import TheWelcome from "./components/TheWelcome.vue"
+import "@/assets/main.css"
+
+import { ref } from "vue"
+
+import type { Weather } from "./types/interfaces/Weather"
+
+import WeatherComponent from "./components/weather/WeatherComponent.vue"
+import SubscriptionForm from "./components/forms/SubscriptionForm.vue"
+import SearchBar from "./components/forms/SearchBar.vue"
+
+const weather = ref<Weather>({
+  temperature: 0,
+  humidity: 0,
+  description: "",
+})
+
+function handleWeather(newWeather: Weather) {
+  weather.value = newWeather
+}
+
+const formOpened = ref(false)
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
   <main>
-    <TheWelcome />
+    <SearchBar class="search-bar" @weather="handleWeather" />
+    <WeatherComponent :weather class="weather-component" />
+    <div @click="formOpened = !formOpened" class="subscription-open-button">
+      {{ formOpened ? "Hide subscription" : "Show subscription" }}
+    </div>
+    <div class="subscription-form-container">
+      <Transition
+        enter-from-class="enter-start"
+        enter-to-class="enter-end"
+        leave-from-class="leave-start"
+        leave-to-class="leave-end"
+      >
+        <SubscriptionForm v-if="formOpened" @close="formOpened = false" />
+      </Transition>
+    </div>
   </main>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+main {
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.search-bar {
+  margin-bottom: 12px;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+.subscription-form-container {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+.enter-start,
+.leave-end {
+  opacity: 0;
+  transform: translateY(100px);
+  transition: 0.5s ease all;
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.enter-end,
+.leave-start {
+  opacity: 1;
+  transform: translateY(0);
+  transition: 0.5s ease all;
+}
+
+.leave-start,
+.leave-end {
+  position: absolute;
+}
+
+.subscription-open-button {
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>
