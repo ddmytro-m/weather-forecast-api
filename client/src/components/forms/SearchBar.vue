@@ -79,7 +79,7 @@ input {
 
   text-align: center;
 
-  font-size: 14px;
+  font-size: 18px;
   padding: 6px;
 }
 

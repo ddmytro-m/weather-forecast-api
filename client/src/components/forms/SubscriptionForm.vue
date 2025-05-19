@@ -23,7 +23,7 @@ const tokenSchema = yup.object({
   token: yup.string().uuid().required(),
 })
 
-const page = ref<"subscribe" | "token" | "unsubscribe">("token")
+const page = ref<"subscribe" | "token" | "unsubscribe">("subscribe")
 const schema = computed(() => {
   if (page.value === "subscribe") return subscritionSchema
   return tokenSchema
@@ -35,7 +35,7 @@ async function onSubmit(data: any) {
     if (page.value === "subscribe") {
       await api.post("/subscribe", data)
       page.value = "token"
-      $toast.info("Confiramtion token was sent to your email", { duration: 5000 })
+      $toast.info("Confirmation token was sent to your email", { duration: 5000 })
     } else if (page.value === "token") {
       const token: string = data.token
       await api.get(`/confirm/${token}`)
@@ -258,6 +258,7 @@ label {
   border: 1px solid var(--color-border);
   color: var(--color-text);
   font-size: 16px;
+  cursor: pointer;
 }
 
 .token-description {

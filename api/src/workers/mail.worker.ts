@@ -7,6 +7,7 @@ import type { Mail } from "../types/models/Mail"
 import { WeatherMail } from "../types/models/WeatherMail"
 
 import { Worker } from "bullmq"
+import { HttpError } from "http-errors"
 
 export const mailWorker = new Worker(
   "mail",
@@ -32,3 +33,7 @@ export const mailWorker = new Worker(
     autorun: false,
   },
 )
+
+mailWorker.on("failed", async (job, error) => {
+  if (error instanceof HttpError && error.statusCode === 404) job?.remove()
+})

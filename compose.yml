@@ -76,6 +76,7 @@ services:
     image: redis:8
     restart: always
     environment:
+      - REDIS_PORT=6379
       - REDIS_PASSWORD
       - REDIS_USER
       - REDIS_USER_PASSWORD
