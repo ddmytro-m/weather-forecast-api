@@ -13,7 +13,7 @@ void (async () => {
   mailWorker.run()
   scheduleWorker.run()
 
-  await scheduleQueue.upsertJobScheduler("hourly-emails", { pattern: "11 * * * *" }) // once a hour
+  await scheduleQueue.upsertJobScheduler("hourly-emails", { pattern: "0 * * * *" }) // once a hour
   await scheduleQueue.upsertJobScheduler("daily-emails", { pattern: "0 9 * * *" }) // once a day at 09:00
 
   app.use(express.json())
