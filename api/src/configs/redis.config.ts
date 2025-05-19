@@ -1,8 +1,9 @@
-import { RedisOptions } from "ioredis";
+import env from "env-var"
+import { RedisOptions } from "ioredis"
 
 export function getRedisConfig(): RedisOptions {
   return {
     host: "redis",
-    port: 6379,
+    port: env.get("REDIS_PORT").required().asInt(),
   }
 }

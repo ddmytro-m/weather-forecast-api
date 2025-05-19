@@ -14,6 +14,7 @@ Set up the environment variables:
 `DATABASE_URL` – database connection url: postgres://{POSTGRES_USER}:{POSTGRES_PASSWORD}@postgres:5432/{POSTGRES_DB}?schema=public
 
 **REDIS:** <br>
+`REDIS_PORT` – redis port *(required)* <br>
 `REDIS_PASSWORD` – redis password *(required)* <br>
 `REDIS_USER` – redis user *(required)* <br>
 `REDIS_USER_PASSWORD` – redis user password *(required)* <br>
@@ -50,3 +51,11 @@ docker-compose up --build
 
 Front-end will be available at http://localhost <br>
 API will be available at http://localhost/api
+
+## Architecture
+This program consists of 3 main parts:
+1. Node.js-based API
+2. PostgreSQL
+3. Redis
+
+API handles the network data and stores information about subscriptions in PostgreSQL. Mails are scheduled by BullMQ that is based on Redis (which is also used for caching)
